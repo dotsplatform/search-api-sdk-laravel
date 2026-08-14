@@ -1,0 +1,9 @@
+parameters:
+  level: 9
+  paths:
+    - src
+  scanFiles:
+    - tests/phpstan/laravel-helpers-stub.php
+  ignoreErrors:
+    -
+      identifier: missingType.iterableValue
