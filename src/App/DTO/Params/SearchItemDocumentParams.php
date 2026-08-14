@@ -7,7 +7,7 @@
  * @author    Bogdan Mamontov <bohdan.mamontov@dotsplatform.com>
  */
 
-namespace Dotsplatform\CatalogSearchApiSdk\DTO\Params;
+namespace Dotsplatform\SearchApiSdk\DTO\Params;
 
 use Dots\Data\DTO;
 

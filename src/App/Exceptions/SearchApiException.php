@@ -1,17 +1,17 @@
 <?php
 
 /**
- * Description of CatalogSearchApiException.php.
+ * Description of SearchApiException.php.
  *
  * @copyright Copyright (c) DOTSPLATFORM, LLC
  * @author    Bogdan Mamontov <bohdan.mamontov@dotsplatform.com>
  */
 
-namespace Dotsplatform\CatalogSearchApiSdk\Exceptions;
+namespace Dotsplatform\SearchApiSdk\Exceptions;
 
 use RuntimeException;
 
-class CatalogSearchApiException extends RuntimeException
+class SearchApiException extends RuntimeException
 {
     public function __construct(
         private readonly array $errors,

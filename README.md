@@ -1,42 +1,42 @@
-# catalog-search-api-sdk
+# search-api-sdk
 
-SDK for the Dots `catalog-search` service (DEV-18541): pushing item documents
+SDK for the Dots `search` service (DEV-18541): pushing item documents
 into the search index and running company-scoped item searches.
 
 ## Installation
 
 ```bash
-composer require dotsplatform/catalog-search-api-sdk
+composer require dotsplatform/search-api-sdk
 ```
 
 Environment variables (the config is auto-discovered, publish it with
 `php artisan vendor:publish --tag=config` if needed):
 
 ```
-RESOURCES_CATALOG_SEARCH_EXTERNAL_HOST=https://catalog-search-lambda.dotsdev.live
-CATALOG_SEARCH_INTERNAL_GATEWAY_TOKEN=...
+RESOURCES_SEARCH_EXTERNAL_HOST=https://search-lambda.dotsdev.live
+SEARCH_INTERNAL_GATEWAY_TOKEN=...
 ```
 
 Bind the interface in the consumer's `AppServiceProvider::$bindings`:
 
 ```php
-use Dotsplatform\CatalogSearchApiSdk\Client\CatalogSearchClient;
-use Dotsplatform\CatalogSearchApiSdk\Client\CatalogSearchHttpClient;
+use Dotsplatform\SearchApiSdk\Client\SearchClient;
+use Dotsplatform\SearchApiSdk\Client\SearchHttpClient;
 
 public array $bindings = [
-    CatalogSearchClient::class => CatalogSearchHttpClient::class,
+    SearchClient::class => SearchHttpClient::class,
 ];
 ```
 
-Tests can bind `SuccessCatalogSearchStubClient` / `FailCatalogSearchStubClient`.
+Tests can bind `SuccessSearchStubClient` / `FailSearchStubClient`.
 
 ## Usage
 
 ```php
-use Dotsplatform\CatalogSearchApiSdk\Client\CatalogSearchClient;
-use Dotsplatform\CatalogSearchApiSdk\DTO\Params\SearchItemDocumentParams;
-use Dotsplatform\CatalogSearchApiSdk\DTO\Params\SearchItemsQueryParams;
-use Dotsplatform\CatalogSearchApiSdk\DTO\Params\StoreSearchItemsParams;
+use Dotsplatform\SearchApiSdk\Client\SearchClient;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemDocumentParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemsQueryParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchItemsParams;
 
 // Ingest (batches of up to 500 documents).
 $client->upsertItems($companyId, StoreSearchItemsParams::fromArray([
@@ -76,7 +76,7 @@ $total = $result->getTotal();
 ```
 
 Errors (transport failures and every HTTP status >= 400) throw
-`CatalogSearchApiException` with the decoded error envelope in `getErrors()`.
+`SearchApiException` with the decoded error envelope in `getErrors()`.
 
 ## Development
 

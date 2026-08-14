@@ -1,11 +1,11 @@
 {
-    "name": "dotsplatform/catalog-search-api-sdk",
+    "name": "dotsplatform/search-api-sdk",
     "type": "library",
-    "description": "SDK for the Dots catalog-search service: item search index ingest and querying.",
+    "description": "SDK for the Dots search service: item search index ingest and querying.",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Dotsplatform\\CatalogSearchApiSdk\\": "src/App"
+            "Dotsplatform\\SearchApiSdk\\": "src/App"
         }
     },
     "autoload-dev": {
@@ -38,7 +38,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Dotsplatform\\CatalogSearchApiSdk\\CatalogSearchAppServiceProvider"
+                "Dotsplatform\\SearchApiSdk\\SearchAppServiceProvider"
             ]
         }
     },

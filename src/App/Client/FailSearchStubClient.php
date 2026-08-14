@@ -1,20 +1,20 @@
 <?php
 
 /**
- * Description of FailCatalogSearchStubClient.php.
+ * Description of FailSearchStubClient.php.
  *
  * @copyright Copyright (c) DOTSPLATFORM, LLC
  * @author    Bogdan Mamontov <bohdan.mamontov@dotsplatform.com>
  */
 
-namespace Dotsplatform\CatalogSearchApiSdk\Client;
+namespace Dotsplatform\SearchApiSdk\Client;
 
-use Dotsplatform\CatalogSearchApiSdk\DTO\Params\SearchItemsQueryParams;
-use Dotsplatform\CatalogSearchApiSdk\DTO\Params\StoreSearchItemsParams;
-use Dotsplatform\CatalogSearchApiSdk\DTO\Response\SearchItemsResult;
-use Dotsplatform\CatalogSearchApiSdk\Exceptions\CatalogSearchApiException;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemsQueryParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchItemsParams;
+use Dotsplatform\SearchApiSdk\DTO\Response\SearchItemsResult;
+use Dotsplatform\SearchApiSdk\Exceptions\SearchApiException;
 
-class FailCatalogSearchStubClient implements CatalogSearchClient
+class FailSearchStubClient implements SearchClient
 {
     public function upsertItems(string $companyId, StoreSearchItemsParams $params): void
     {
@@ -38,6 +38,6 @@ class FailCatalogSearchStubClient implements CatalogSearchClient
 
     private function fail(): never
     {
-        throw new CatalogSearchApiException([], 'Catalog Search API request failed');
+        throw new SearchApiException([], 'Catalog Search API request failed');
     }
 }

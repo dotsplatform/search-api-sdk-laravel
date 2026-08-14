@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Dotsplatform\CatalogSearchApiSdk\DTO\Params\SearchItemDocumentParams;
-use Dotsplatform\CatalogSearchApiSdk\DTO\Params\StoreSearchItemsParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemDocumentParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchItemsParams;
 use PHPUnit\Framework\TestCase;
 
 class StoreSearchItemsParamsTest extends TestCase

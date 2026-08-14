@@ -7,9 +7,9 @@
  * @author    Bogdan Mamontov <bohdan.mamontov@dotsplatform.com>
  */
 
-namespace Dotsplatform\CatalogSearchApiSdk\Client;
+namespace Dotsplatform\SearchApiSdk\Client;
 
-use Dotsplatform\CatalogSearchApiSdk\Exceptions\CatalogSearchApiException;
+use Dotsplatform\SearchApiSdk\Exceptions\SearchApiException;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
@@ -26,8 +26,8 @@ abstract class HttpClient
 
     public function __construct()
     {
-        $host = config('catalog-search-api-sdk.catalog-search-server.host');
-        $token = config('catalog-search-api-sdk.catalog-search-server.token');
+        $host = config('search-api-sdk.search-server.host');
+        $token = config('search-api-sdk.search-server.token');
         $this->serviceHost = is_string($host) ? $host : '';
         $this->gatewayToken = is_string($token) ? $token : '';
     }
@@ -68,7 +68,7 @@ abstract class HttpClient
         try {
             $response = $this->makeClient()->request($method, $uri, $options);
         } catch (GuzzleException $e) {
-            throw new CatalogSearchApiException([], $e->getMessage());
+            throw new SearchApiException([], $e->getMessage());
         }
 
         $this->assertSuccessful($response);
@@ -82,7 +82,7 @@ abstract class HttpClient
             return;
         }
 
-        throw new CatalogSearchApiException(
+        throw new SearchApiException(
             $this->decode($response),
             'Catalog Search API request failed',
             $response->getStatusCode(),

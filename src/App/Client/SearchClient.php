@@ -1,19 +1,19 @@
 <?php
 
 /**
- * Description of CatalogSearchClient.php.
+ * Description of SearchClient.php.
  *
  * @copyright Copyright (c) DOTSPLATFORM, LLC
  * @author    Bogdan Mamontov <bohdan.mamontov@dotsplatform.com>
  */
 
-namespace Dotsplatform\CatalogSearchApiSdk\Client;
+namespace Dotsplatform\SearchApiSdk\Client;
 
-use Dotsplatform\CatalogSearchApiSdk\DTO\Params\SearchItemsQueryParams;
-use Dotsplatform\CatalogSearchApiSdk\DTO\Params\StoreSearchItemsParams;
-use Dotsplatform\CatalogSearchApiSdk\DTO\Response\SearchItemsResult;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemsQueryParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchItemsParams;
+use Dotsplatform\SearchApiSdk\DTO\Response\SearchItemsResult;
 
-interface CatalogSearchClient
+interface SearchClient
 {
     public function upsertItems(string $companyId, StoreSearchItemsParams $params): void;
 

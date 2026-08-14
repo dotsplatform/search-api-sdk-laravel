@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Dotsplatform\CatalogSearchApiSdk\DTO\Response\SearchItemsResult;
+use Dotsplatform\SearchApiSdk\DTO\Response\SearchItemsResult;
 use PHPUnit\Framework\TestCase;
 
 class SearchItemsResultTest extends TestCase

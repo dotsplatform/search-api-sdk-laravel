@@ -7,7 +7,7 @@
  * @author    Bogdan Mamontov <bohdan.mamontov@dotsplatform.com>
  */
 
-namespace Dotsplatform\CatalogSearchApiSdk\DTO\Response;
+namespace Dotsplatform\SearchApiSdk\DTO\Response;
 
 use Dots\Data\DTO;
 
