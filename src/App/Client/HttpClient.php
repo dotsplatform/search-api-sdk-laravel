@@ -18,6 +18,10 @@ abstract class HttpClient
 {
     private const INTERNAL_GATEWAY_TOKEN_HEADER = 'X-Internal-Gateway-Token';
 
+    private const CONNECT_TIMEOUT_SECONDS = 3;
+
+    private const REQUEST_TIMEOUT_SECONDS = 10;
+
     protected string $serviceHost;
 
     protected string $gatewayToken;
@@ -42,6 +46,8 @@ abstract class HttpClient
                     self::INTERNAL_GATEWAY_TOKEN_HEADER => $this->gatewayToken,
                 ],
                 'http_errors' => false,
+                'connect_timeout' => self::CONNECT_TIMEOUT_SECONDS,
+                'timeout' => self::REQUEST_TIMEOUT_SECONDS,
             ]);
         }
 
@@ -84,7 +90,7 @@ abstract class HttpClient
 
         throw new SearchApiException(
             $this->decode($response),
-            'Catalog Search API request failed',
+            'Catalog Search API request failed: HTTP '.$response->getStatusCode(),
             $response->getStatusCode(),
         );
     }
