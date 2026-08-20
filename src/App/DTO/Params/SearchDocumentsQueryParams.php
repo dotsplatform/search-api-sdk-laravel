@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of SearchItemsQueryParams.php.
+ * Description of SearchDocumentsQueryParams.php.
  *
  * @copyright Copyright (c) DOTSPLATFORM, LLC
  * @author    Bogdan Mamontov <bohdan.mamontov@dotsplatform.com>
@@ -13,25 +13,25 @@ use Dots\Data\DTO;
 
 /**
  * Search query parameters. Everything except `q` is optional — omitted
- * values fall back to the service defaults (fields: name only, langScope:
- * all, layout correction and external-code matching on).
+ * values fall back to the service defaults. `langs` empty/omitted means
+ * every stored language; `source`/`userId` only feed the service-side
+ * search request log.
  */
-class SearchItemsQueryParams extends DTO
+class SearchDocumentsQueryParams extends DTO
 {
     protected string $q;
 
     protected ?string $provider = null;
 
     /** @var string[]|null */
-    protected ?array $fields = null;
+    protected ?array $types = null;
 
-    protected ?string $langScope = null;
+    protected ?string $cityId = null;
 
-    protected ?string $lang = null;
+    protected ?string $companyId = null;
 
-    protected ?bool $layoutCorrection = null;
-
-    protected ?bool $matchExternalCodes = null;
+    /** @var string[]|null */
+    protected ?array $langs = null;
 
     /** @var int[]|null */
     protected ?array $statuses = null;
@@ -45,6 +45,10 @@ class SearchItemsQueryParams extends DTO
     protected ?int $limit = null;
 
     protected ?int $offset = null;
+
+    protected ?string $source = null;
+
+    protected ?string $userId = null;
 
     public function getQ(): string
     {
@@ -64,15 +68,7 @@ class SearchItemsQueryParams extends DTO
     public function toArray(): array
     {
         $data = parent::toArray();
-        $data = array_filter($data, fn ($value) => $value !== null && $value !== []);
 
-        // Booleans travel in a query string — send them as 0/1 explicitly.
-        foreach (['layoutCorrection', 'matchExternalCodes'] as $booleanKey) {
-            if (array_key_exists($booleanKey, $data)) {
-                $data[$booleanKey] = $data[$booleanKey] ? 1 : 0;
-            }
-        }
-
-        return $data;
+        return array_filter($data, fn ($value) => $value !== null && $value !== []);
     }
 }

@@ -9,20 +9,28 @@
 
 namespace Dotsplatform\SearchApiSdk\Client;
 
-use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemsQueryParams;
-use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchItemsParams;
-use Dotsplatform\SearchApiSdk\DTO\Response\SearchItemsResult;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchDocumentsQueryParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchDocumentsParams;
+use Dotsplatform\SearchApiSdk\DTO\Response\SearchDocumentsResult;
 
 interface SearchClient
 {
-    public function upsertItems(string $companyId, StoreSearchItemsParams $params): void;
+    /**
+     * Ingest is asynchronous on the service side — the call returns once the
+     * batch is accepted (202), not when it is indexed.
+     */
+    public function storeDocuments(string $accountId, StoreSearchDocumentsParams $params): void;
 
     /**
-     * @param string[] $ids
+     * @param string[] $entityIds
      */
-    public function deleteItems(string $companyId, array $ids): void;
+    public function deleteDocuments(string $accountId, string $type, array $entityIds): void;
+
+    public function purgeAccount(string $accountId): void;
 
     public function purgeCompany(string $companyId): void;
 
-    public function search(string $companyId, SearchItemsQueryParams $params): SearchItemsResult;
+    public function searchCompanyItems(string $companyId, SearchDocumentsQueryParams $params): SearchDocumentsResult;
+
+    public function searchAccountDocuments(string $accountId, SearchDocumentsQueryParams $params): SearchDocumentsResult;
 }

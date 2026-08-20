@@ -9,17 +9,21 @@
 
 namespace Dotsplatform\SearchApiSdk\Client;
 
-use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemsQueryParams;
-use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchItemsParams;
-use Dotsplatform\SearchApiSdk\DTO\Response\SearchItemsResult;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchDocumentsQueryParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchDocumentsParams;
+use Dotsplatform\SearchApiSdk\DTO\Response\SearchDocumentsResult;
 
 class SuccessSearchStubClient implements SearchClient
 {
-    public function upsertItems(string $companyId, StoreSearchItemsParams $params): void
+    public function storeDocuments(string $accountId, StoreSearchDocumentsParams $params): void
     {
     }
 
-    public function deleteItems(string $companyId, array $ids): void
+    public function deleteDocuments(string $accountId, string $type, array $entityIds): void
+    {
+    }
+
+    public function purgeAccount(string $accountId): void
     {
     }
 
@@ -27,10 +31,20 @@ class SuccessSearchStubClient implements SearchClient
     {
     }
 
-    public function search(string $companyId, SearchItemsQueryParams $params): SearchItemsResult
+    public function searchCompanyItems(string $companyId, SearchDocumentsQueryParams $params): SearchDocumentsResult
     {
-        return SearchItemsResult::fromArray([
-            'items' => [],
+        return $this->makeEmptyResult($params);
+    }
+
+    public function searchAccountDocuments(string $accountId, SearchDocumentsQueryParams $params): SearchDocumentsResult
+    {
+        return $this->makeEmptyResult($params);
+    }
+
+    private function makeEmptyResult(SearchDocumentsQueryParams $params): SearchDocumentsResult
+    {
+        return SearchDocumentsResult::fromArray([
+            'documents' => [],
             'total' => 0,
             'limit' => $params->getLimit() ?? 0,
             'offset' => $params->getOffset() ?? 0,

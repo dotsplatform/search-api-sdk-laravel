@@ -1,7 +1,8 @@
 # search-api-sdk
 
-SDK for the Dots `search` service (DEV-18541): pushing item documents
-into the search index and running company-scoped item searches.
+SDK for the Dots `search` service (DEV-18541): pushing documents
+(companies, addresses, categories, items) into the universal search index
+and running account- or company-scoped searches.
 
 ## Installation
 
@@ -34,22 +35,26 @@ Tests can bind `SuccessSearchStubClient` / `FailSearchStubClient`.
 
 ```php
 use Dotsplatform\SearchApiSdk\Client\SearchClient;
-use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemDocumentParams;
-use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemsQueryParams;
-use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchItemsParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchDocumentParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchDocumentsQueryParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchDocumentsParams;
+use Dotsplatform\SearchApiSdk\Entities\SearchDocumentType;
+use Dotsplatform\SearchApiSdk\Entities\SearchRequestSource;
 
-// Ingest (batches of up to 500 documents).
-$client->upsertItems($companyId, StoreSearchItemsParams::fromArray([
-    'accountId' => $accountId,
-    'items' => [
-        SearchItemDocumentParams::fromArray([
-            'id' => $dishToken,
+// Ingest (batches of up to 500 documents). The service processes the batch
+// asynchronously — the call returns once it is accepted (202).
+$client->storeDocuments($accountId, StoreSearchDocumentsParams::fromArray([
+    'documents' => [
+        SearchDocumentParams::fromArray([
+            'type' => SearchDocumentType::ITEM,
+            'entityId' => $dishToken,
+            'companyId' => $companyId,
             'categoryId' => $categoryToken,
+            'cityId' => $cityId,
             'status' => 1,
-            'popular' => true,
             'priority' => 10,
-            'price' => 250,
             'externalId' => '12345',
+            'updatedTime' => time(),
             'names' => ['ua' => 'Піца Маргарита', 'en' => 'Pizza Margherita'],
             'excerpts' => ['ua' => 'Томати і моцарела'],
             'descriptions' => ['ua' => 'Класична італійська піца'],
@@ -57,23 +62,36 @@ $client->upsertItems($companyId, StoreSearchItemsParams::fromArray([
     ],
 ]));
 
-$client->deleteItems($companyId, [$dishToken]);
+$client->deleteDocuments($accountId, SearchDocumentType::ITEM, [$dishToken]);
 $client->purgeCompany($companyId);
+$client->purgeAccount($accountId);
 
-// Search — returns ranked ids; hydrate full item data from your own DB.
-$result = $client->search($companyId, SearchItemsQueryParams::fromArray([
+// Search — returns ranked entity ids; hydrate full data from your own DB.
+// `langs` empty/omitted matches every stored language.
+$result = $client->searchCompanyItems($companyId, SearchDocumentsQueryParams::fromArray([
     'q' => 'маргарита',
-    'provider' => 'eloquent',
-    'fields' => ['name', 'excerpt'],
-    'langScope' => 'all',
+    'langs' => ['ua'],
     'statuses' => [1],
+    'source' => SearchRequestSource::ADMIN,
+    'userId' => (string) $adminUserId,
     'limit' => 20,
     'offset' => 0,
 ]));
 
 $ids = $result->getIds();
 $total = $result->getTotal();
+
+// Account-wide search across document types (global/city search).
+$result = $client->searchAccountDocuments($accountId, SearchDocumentsQueryParams::fromArray([
+    'q' => 'морозиво',
+    'types' => [SearchDocumentType::COMPANY, SearchDocumentType::ITEM],
+    'cityId' => $cityId,
+    'source' => SearchRequestSource::WEB,
+]));
 ```
+
+The minimum query length is 3 characters (MySQL FULLTEXT min token size on
+the service side) — shorter queries are rejected with a validation error.
 
 Errors (transport failures and every HTTP status >= 400) throw
 `SearchApiException` with the decoded error envelope in `getErrors()`.

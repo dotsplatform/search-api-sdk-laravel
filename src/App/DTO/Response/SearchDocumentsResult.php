@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of SearchItemsResult.php.
+ * Description of SearchDocumentsResult.php.
  *
  * @copyright Copyright (c) DOTSPLATFORM, LLC
  * @author    Bogdan Mamontov <bohdan.mamontov@dotsplatform.com>
@@ -11,10 +11,10 @@ namespace Dotsplatform\SearchApiSdk\DTO\Response;
 
 use Dots\Data\DTO;
 
-class SearchItemsResult extends DTO
+class SearchDocumentsResult extends DTO
 {
-    /** @var array[] raw `{id, score}` rows as returned by the service */
-    protected array $items = [];
+    /** @var array[] raw `{id, type, score}` rows as returned by the service */
+    protected array $documents = [];
 
     protected int $total = 0;
 
@@ -23,32 +23,32 @@ class SearchItemsResult extends DTO
     protected int $offset = 0;
 
     /**
-     * @return FoundSearchItem[]
+     * @return FoundDocument[]
      */
-    public function getItems(): array
+    public function getDocuments(): array
     {
-        $items = [];
-        foreach ($this->items as $item) {
-            if (! is_array($item)) {
+        $documents = [];
+        foreach ($this->documents as $document) {
+            if (! is_array($document)) {
                 continue;
             }
 
-            $items[] = FoundSearchItem::fromArray($item);
+            $documents[] = FoundDocument::fromArray($document);
         }
 
-        return $items;
+        return $documents;
     }
 
     /**
-     * Found item ids (dish tokens) in relevance order.
+     * Found entity ids in relevance order.
      *
      * @return string[]
      */
     public function getIds(): array
     {
         $ids = [];
-        foreach ($this->getItems() as $item) {
-            $ids[] = $item->getId();
+        foreach ($this->getDocuments() as $document) {
+            $ids[] = $document->getId();
         }
 
         return $ids;

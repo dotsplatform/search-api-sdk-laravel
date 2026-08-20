@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Description of SearchItemDocumentParams.php.
+ * Description of SearchDocumentParams.php.
  *
  * @copyright Copyright (c) DOTSPLATFORM, LLC
  * @author    Bogdan Mamontov <bohdan.mamontov@dotsplatform.com>
@@ -12,14 +12,23 @@ namespace Dotsplatform\SearchApiSdk\DTO\Params;
 use Dots\Data\DTO;
 
 /**
- * One searchable item document. `id` is the item (dish) token; text fields
- * are maps keyed by language code, e.g. ['ua' => 'Піца', 'en' => 'Pizza'].
+ * One searchable document. `entityId` is the indexed entity's id (dish token,
+ * company id, address id, category id — depending on `type`); text fields are
+ * maps keyed by language code, e.g. ['ua' => 'Піца', 'en' => 'Pizza'].
+ * `updatedTime` orders out-of-order ingest jobs on the service side — pass
+ * the moment the entity changed.
  */
-class SearchItemDocumentParams extends DTO
+class SearchDocumentParams extends DTO
 {
-    protected string $id;
+    protected string $type;
+
+    protected string $entityId;
+
+    protected ?string $companyId = null;
 
     protected ?string $categoryId = null;
+
+    protected ?string $cityId = null;
 
     protected ?string $externalId = null;
 
@@ -29,11 +38,9 @@ class SearchItemDocumentParams extends DTO
 
     protected int $status = 0;
 
-    protected bool $popular = false;
-
     protected int $priority = 0;
 
-    protected int $price = 0;
+    protected ?int $updatedTime = null;
 
     /** @var array<string, string> */
     protected array $names = [];
@@ -44,9 +51,14 @@ class SearchItemDocumentParams extends DTO
     /** @var array<string, string> */
     protected array $descriptions = [];
 
-    public function getId(): string
+    public function getType(): string
     {
-        return $this->id;
+        return $this->type;
+    }
+
+    public function getEntityId(): string
+    {
+        return $this->entityId;
     }
 
     public function toArray(): array

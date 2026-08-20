@@ -1,7 +1,7 @@
 {
     "name": "dotsplatform/search-api-sdk",
     "type": "library",
-    "description": "SDK for the Dots search service: item search index ingest and querying.",
+    "description": "SDK for the Dots search service: universal document index ingest and querying.",
     "license": "MIT",
     "autoload": {
         "psr-4": {

@@ -9,19 +9,24 @@
 
 namespace Dotsplatform\SearchApiSdk\Client;
 
-use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemsQueryParams;
-use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchItemsParams;
-use Dotsplatform\SearchApiSdk\DTO\Response\SearchItemsResult;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchDocumentsQueryParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchDocumentsParams;
+use Dotsplatform\SearchApiSdk\DTO\Response\SearchDocumentsResult;
 use Dotsplatform\SearchApiSdk\Exceptions\SearchApiException;
 
 class FailSearchStubClient implements SearchClient
 {
-    public function upsertItems(string $companyId, StoreSearchItemsParams $params): void
+    public function storeDocuments(string $accountId, StoreSearchDocumentsParams $params): void
     {
         $this->fail();
     }
 
-    public function deleteItems(string $companyId, array $ids): void
+    public function deleteDocuments(string $accountId, string $type, array $entityIds): void
+    {
+        $this->fail();
+    }
+
+    public function purgeAccount(string $accountId): void
     {
         $this->fail();
     }
@@ -31,13 +36,18 @@ class FailSearchStubClient implements SearchClient
         $this->fail();
     }
 
-    public function search(string $companyId, SearchItemsQueryParams $params): SearchItemsResult
+    public function searchCompanyItems(string $companyId, SearchDocumentsQueryParams $params): SearchDocumentsResult
+    {
+        $this->fail();
+    }
+
+    public function searchAccountDocuments(string $accountId, SearchDocumentsQueryParams $params): SearchDocumentsResult
     {
         $this->fail();
     }
 
     private function fail(): never
     {
-        throw new SearchApiException([], 'Catalog Search API request failed');
+        throw new SearchApiException([], 'Search API request failed');
     }
 }
