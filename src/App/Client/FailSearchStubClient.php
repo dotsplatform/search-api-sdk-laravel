@@ -36,8 +36,11 @@ class FailSearchStubClient implements SearchClient
         $this->fail();
     }
 
-    public function searchCompanyItems(string $companyId, SearchDocumentsQueryParams $params): SearchDocumentsResult
-    {
+    public function searchCompanyItems(
+        string $accountId,
+        string $companyId,
+        SearchDocumentsQueryParams $params,
+    ): SearchDocumentsResult {
         $this->fail();
     }
 

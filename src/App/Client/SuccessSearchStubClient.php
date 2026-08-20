@@ -31,8 +31,11 @@ class SuccessSearchStubClient implements SearchClient
     {
     }
 
-    public function searchCompanyItems(string $companyId, SearchDocumentsQueryParams $params): SearchDocumentsResult
-    {
+    public function searchCompanyItems(
+        string $accountId,
+        string $companyId,
+        SearchDocumentsQueryParams $params,
+    ): SearchDocumentsResult {
         return $this->makeEmptyResult($params);
     }
 
