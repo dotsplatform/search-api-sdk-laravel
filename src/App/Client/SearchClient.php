@@ -30,7 +30,11 @@ interface SearchClient
 
     public function purgeCompany(string $companyId): void;
 
-    public function searchCompanyItems(string $companyId, SearchDocumentsQueryParams $params): SearchDocumentsResult;
+    public function searchCompanyItems(
+        string $accountId,
+        string $companyId,
+        SearchDocumentsQueryParams $params,
+    ): SearchDocumentsResult;
 
     public function searchAccountDocuments(string $accountId, SearchDocumentsQueryParams $params): SearchDocumentsResult;
 }

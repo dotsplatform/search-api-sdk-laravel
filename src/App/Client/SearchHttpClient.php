@@ -23,7 +23,7 @@ class SearchHttpClient extends HttpClient implements SearchClient
 
     private const COMPANY_URL = '/api/v1/companies/%s';
 
-    private const COMPANY_ITEMS_SEARCH_URL = '/api/v1/companies/%s/items/search';
+    private const ACCOUNT_COMPANY_ITEMS_SEARCH_URL = '/api/v1/accounts/%s/companies/%s/items/search';
 
     public function storeDocuments(string $accountId, StoreSearchDocumentsParams $params): void
     {
@@ -52,10 +52,13 @@ class SearchHttpClient extends HttpClient implements SearchClient
         $this->delete(sprintf(self::COMPANY_URL, $companyId));
     }
 
-    public function searchCompanyItems(string $companyId, SearchDocumentsQueryParams $params): SearchDocumentsResult
-    {
+    public function searchCompanyItems(
+        string $accountId,
+        string $companyId,
+        SearchDocumentsQueryParams $params,
+    ): SearchDocumentsResult {
         return SearchDocumentsResult::fromArray(
-            $this->get(sprintf(self::COMPANY_ITEMS_SEARCH_URL, $companyId), [
+            $this->get(sprintf(self::ACCOUNT_COMPANY_ITEMS_SEARCH_URL, $accountId, $companyId), [
                 'query' => $params->toArray(),
             ]),
         );

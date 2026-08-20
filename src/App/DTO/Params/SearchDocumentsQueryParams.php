@@ -11,12 +11,6 @@ namespace Dotsplatform\SearchApiSdk\DTO\Params;
 
 use Dots\Data\DTO;
 
-/**
- * Search query parameters. Everything except `q` is optional — omitted
- * values fall back to the service defaults. `langs` empty/omitted means
- * every stored language; `source`/`userId` only feed the service-side
- * search request log.
- */
 class SearchDocumentsQueryParams extends DTO
 {
     protected string $q;

@@ -11,13 +11,6 @@ namespace Dotsplatform\SearchApiSdk\DTO\Params;
 
 use Dots\Data\DTO;
 
-/**
- * One searchable document. `entityId` is the indexed entity's id (dish token,
- * company id, address id, category id — depending on `type`); text fields are
- * maps keyed by language code, e.g. ['ua' => 'Піца', 'en' => 'Pizza'].
- * `updatedTime` orders out-of-order ingest jobs on the service side — pass
- * the moment the entity changed.
- */
 class SearchDocumentParams extends DTO
 {
     protected string $type;

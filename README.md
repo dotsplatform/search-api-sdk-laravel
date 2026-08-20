@@ -68,7 +68,7 @@ $client->purgeAccount($accountId);
 
 // Search — returns ranked entity ids; hydrate full data from your own DB.
 // `langs` empty/omitted matches every stored language.
-$result = $client->searchCompanyItems($companyId, SearchDocumentsQueryParams::fromArray([
+$result = $client->searchCompanyItems($accountId, $companyId, SearchDocumentsQueryParams::fromArray([
     'q' => 'маргарита',
     'langs' => ['ua'],
     'statuses' => [1],
