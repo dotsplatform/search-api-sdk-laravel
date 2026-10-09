@@ -15,7 +15,7 @@ Environment variables (the config is auto-discovered, publish it with
 
 ```
 RESOURCES_SEARCH_EXTERNAL_HOST=https://search-lambda.dotsdev.live
-SEARCH_INTERNAL_GATEWAY_TOKEN=...
+INTERNAL_GATEWAY_TOKEN=...
 ```
 
 Bind the interface in the consumer's `AppServiceProvider::$bindings`:
