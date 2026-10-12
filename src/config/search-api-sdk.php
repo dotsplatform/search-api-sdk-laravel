@@ -10,6 +10,6 @@
 return [
     'search-server' => [
         'host' => env('RESOURCES_SEARCH_EXTERNAL_HOST'),
-        'token' => env('SEARCH_INTERNAL_GATEWAY_TOKEN'),
+        'token' => env('INTERNAL_GATEWAY_TOKEN', ''),
     ],
 ];
