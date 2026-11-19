@@ -10,11 +10,13 @@
 namespace Dotsplatform\SearchApiSdk\Client;
 
 use Dotsplatform\SearchApiSdk\DTO\Params\SearchDocumentsQueryParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemOwnersQueryParams;
 use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchDocumentsParams;
 use Dotsplatform\SearchApiSdk\DTO\Response\SearchDocumentsResult;
+use Dotsplatform\SearchApiSdk\DTO\Response\SearchItemOwnersResult;
 use Dotsplatform\SearchApiSdk\Exceptions\SearchApiException;
 
-class FailSearchStubClient implements SearchClient
+class FailSearchStubClient implements SearchClient, SearchItemOwnersClient
 {
     public function storeDocuments(string $accountId, StoreSearchDocumentsParams $params): void
     {
@@ -45,6 +47,11 @@ class FailSearchStubClient implements SearchClient
     }
 
     public function searchAccountDocuments(string $accountId, SearchDocumentsQueryParams $params): SearchDocumentsResult
+    {
+        $this->fail();
+    }
+
+    public function searchAccountItemOwners(string $accountId, SearchItemOwnersQueryParams $params): SearchItemOwnersResult
     {
         $this->fail();
     }
