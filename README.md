@@ -23,11 +23,16 @@ Bind the interface in the consumer's `AppServiceProvider::$bindings`:
 ```php
 use Dotsplatform\SearchApiSdk\Client\SearchClient;
 use Dotsplatform\SearchApiSdk\Client\SearchHttpClient;
+use Dotsplatform\SearchApiSdk\Client\SearchItemOwnersClient;
 
 public array $bindings = [
     SearchClient::class => SearchHttpClient::class,
+    SearchItemOwnersClient::class => SearchHttpClient::class,
 ];
 ```
+
+`SearchItemOwnersClient` is a separate interface (since v1.2.0), so adding it
+did not change `SearchClient` for consumers that implement it in their tests.
 
 Tests can bind `SuccessSearchStubClient` / `FailSearchStubClient`.
 
@@ -88,6 +93,23 @@ $result = $client->searchAccountDocuments($accountId, SearchDocumentsQueryParams
     'cityId' => $cityId,
     'source' => SearchRequestSource::WEB,
 ]));
+```
+
+Item owners search (since v1.2.0) — which companies or shared Menus have an
+item whose **name** matches; used for "venues that sell dolma" on a city page.
+With `cityId`, owners of that city and owners without a city (shared Menus)
+are returned. Ids come ascending, capped at 100 (a city has far fewer venues and shared Menus).
+
+```php
+use Dotsplatform\SearchApiSdk\Client\SearchItemOwnersClient;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemOwnersQueryParams;
+
+$ownerIds = $itemOwnersClient->searchAccountItemOwners($accountId, SearchItemOwnersQueryParams::fromArray([
+    'q' => 'долма',
+    'cityId' => $cityId,
+    'statuses' => [1, 2],
+    'source' => SearchRequestSource::WEB,
+]))->getOwnerIds();
 ```
 
 The minimum query length is 3 characters (MySQL FULLTEXT min token size on

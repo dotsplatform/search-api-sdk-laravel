@@ -10,10 +10,12 @@
 namespace Dotsplatform\SearchApiSdk\Client;
 
 use Dotsplatform\SearchApiSdk\DTO\Params\SearchDocumentsQueryParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemOwnersQueryParams;
 use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchDocumentsParams;
 use Dotsplatform\SearchApiSdk\DTO\Response\SearchDocumentsResult;
+use Dotsplatform\SearchApiSdk\DTO\Response\SearchItemOwnersResult;
 
-class SearchHttpClient extends HttpClient implements SearchClient
+class SearchHttpClient extends HttpClient implements SearchClient, SearchItemOwnersClient
 {
     private const ACCOUNT_URL = '/api/v1/accounts/%s';
 
@@ -24,6 +26,8 @@ class SearchHttpClient extends HttpClient implements SearchClient
     private const COMPANY_URL = '/api/v1/companies/%s';
 
     private const ACCOUNT_COMPANY_ITEMS_SEARCH_URL = '/api/v1/accounts/%s/companies/%s/items/search';
+
+    private const ACCOUNT_ITEM_OWNERS_SEARCH_URL = '/api/v1/accounts/%s/items/owners/search';
 
     public function storeDocuments(string $accountId, StoreSearchDocumentsParams $params): void
     {
@@ -68,6 +72,15 @@ class SearchHttpClient extends HttpClient implements SearchClient
     {
         return SearchDocumentsResult::fromArray(
             $this->get(sprintf(self::ACCOUNT_SEARCH_URL, $accountId), [
+                'query' => $params->toArray(),
+            ]),
+        );
+    }
+
+    public function searchAccountItemOwners(string $accountId, SearchItemOwnersQueryParams $params): SearchItemOwnersResult
+    {
+        return SearchItemOwnersResult::fromArray(
+            $this->get(sprintf(self::ACCOUNT_ITEM_OWNERS_SEARCH_URL, $accountId), [
                 'query' => $params->toArray(),
             ]),
         );
