@@ -46,10 +46,26 @@ class StoreSearchDocumentsParamsTest extends TestCase
 
         $this->assertArrayNotHasKey('companyId', $data);
         $this->assertArrayNotHasKey('categoryId', $data);
+        $this->assertArrayNotHasKey('categoryIds', $data);
         $this->assertArrayNotHasKey('cityId', $data);
         $this->assertArrayNotHasKey('externalId', $data);
         $this->assertArrayNotHasKey('updatedTime', $data);
         $this->assertSame(0, $data['status']);
         $this->assertSame(0, $data['priority']);
+    }
+
+    public function testDocumentSerializesCategoryIds(): void
+    {
+        $document = SearchDocumentParams::fromArray([
+            'type' => 'item',
+            'entityId' => 'item-token',
+            'categoryId' => 'primary-category',
+            'categoryIds' => ['primary-category', 'additional-category'],
+        ]);
+
+        $data = $document->toArray();
+
+        $this->assertSame('primary-category', $data['categoryId']);
+        $this->assertSame(['primary-category', 'additional-category'], $data['categoryIds']);
     }
 }

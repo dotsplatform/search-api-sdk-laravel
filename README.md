@@ -23,11 +23,16 @@ Bind the interface in the consumer's `AppServiceProvider::$bindings`:
 ```php
 use Dotsplatform\SearchApiSdk\Client\SearchClient;
 use Dotsplatform\SearchApiSdk\Client\SearchHttpClient;
+use Dotsplatform\SearchApiSdk\Client\SearchItemCategoriesClient;
 
 public array $bindings = [
     SearchClient::class => SearchHttpClient::class,
+    SearchItemCategoriesClient::class => SearchHttpClient::class,
 ];
 ```
+
+`SearchItemCategoriesClient` is a separate interface, so adding it did not
+change `SearchClient` for consumers that implement it in their tests.
 
 Tests can bind `SuccessSearchStubClient` / `FailSearchStubClient`.
 
@@ -50,6 +55,8 @@ $client->storeDocuments($accountId, StoreSearchDocumentsParams::fromArray([
             'entityId' => $dishToken,
             'companyId' => $companyId,
             'categoryId' => $categoryToken,
+            // every category of the item, primary first (additional categories included)
+            'categoryIds' => [$categoryToken, $additionalCategoryToken],
             'cityId' => $cityId,
             'status' => 1,
             'priority' => 10,
@@ -88,6 +95,31 @@ $result = $client->searchAccountDocuments($accountId, SearchDocumentsQueryParams
     'cityId' => $cityId,
     'source' => SearchRequestSource::WEB,
 ]));
+```
+
+An item belongs to category X when X is its primary `categoryId` **or** one
+of its `categoryIds` — the `categoryId` filter of the item search uses that
+rule, so an item is also found in its additional categories.
+
+Item categories search — which categories of a company (or shared Menu) contain
+items matching the query; the same filters as the item search, without the
+category filter, sort and paging. Used for the admin category tabs, so the tabs
+and the items of a tab come from the same index. Pass the returned
+`respondedProvider` as `provider` of the following item search to keep both
+halves on the same engine.
+
+```php
+use Dotsplatform\SearchApiSdk\Client\SearchItemCategoriesClient;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemCategoriesQueryParams;
+
+$categories = $categoriesClient->searchCompanyItemCategories($accountId, $companyId, SearchItemCategoriesQueryParams::fromArray([
+    'q' => 'торт',
+    'statuses' => [0, 1, 2, 3],
+    'source' => SearchRequestSource::ADMIN,
+]));
+
+$categoryIds = $categories->getCategoryIds(); // ascending, at most 1000
+$provider = $categories->getRespondedProvider();
 ```
 
 The minimum query length is 3 characters (MySQL FULLTEXT min token size on

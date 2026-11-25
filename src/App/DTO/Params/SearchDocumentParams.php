@@ -21,6 +21,9 @@ class SearchDocumentParams extends DTO
 
     protected ?string $categoryId = null;
 
+    /** @var string[]|null every category of the item, primary first */
+    protected ?array $categoryIds = null;
+
     protected ?string $cityId = null;
 
     protected ?string $externalId = null;
