@@ -10,10 +10,12 @@
 namespace Dotsplatform\SearchApiSdk\Client;
 
 use Dotsplatform\SearchApiSdk\DTO\Params\SearchDocumentsQueryParams;
+use Dotsplatform\SearchApiSdk\DTO\Params\SearchItemCategoriesQueryParams;
 use Dotsplatform\SearchApiSdk\DTO\Params\StoreSearchDocumentsParams;
 use Dotsplatform\SearchApiSdk\DTO\Response\SearchDocumentsResult;
+use Dotsplatform\SearchApiSdk\DTO\Response\SearchItemCategoriesResult;
 
-class SuccessSearchStubClient implements SearchClient
+class SuccessSearchStubClient implements SearchClient, SearchItemCategoriesClient
 {
     public function storeDocuments(string $accountId, StoreSearchDocumentsParams $params): void
     {
@@ -42,6 +44,14 @@ class SuccessSearchStubClient implements SearchClient
     public function searchAccountDocuments(string $accountId, SearchDocumentsQueryParams $params): SearchDocumentsResult
     {
         return $this->makeEmptyResult($params);
+    }
+
+    public function searchCompanyItemCategories(
+        string $accountId,
+        string $companyId,
+        SearchItemCategoriesQueryParams $params,
+    ): SearchItemCategoriesResult {
+        return SearchItemCategoriesResult::fromArray([]);
     }
 
     private function makeEmptyResult(SearchDocumentsQueryParams $params): SearchDocumentsResult
